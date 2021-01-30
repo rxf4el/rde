@@ -4,29 +4,11 @@
 
 { config, lib, pkgs, inputs, ... }: {
   
-  boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "usb_storage" "sd_mod" ];
-  boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [ "kvm-amd" ];
-  boot.extraModulePackages = [ ];
-
-  fileSystems."/" =
-    { device = "/dev/disk/by-uuid/5fd51d6c-04b2-43f7-8612-cec6e7b3b8ba";
-      fsType = "btrfs";
-      options = [ "subvol=nixos" "noatime" "discard" "space_cache" ];
-    };
-
-  fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/9B90-BEDD";
-      fsType = "vfat";
-    };
-
-  swapDevices = [ ];
-
-  nix.maxJobs = lib.mkDefault 8;
-  # powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
-
-  nixpks.config = { allowUnfree = true; };
-
+  imports = [ # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+  ];
+  
+  nixpks.config.allowUnfree = true;
   powerManagement.enable = true;
   powerManagement.powertop.enable = true;
 
@@ -45,6 +27,11 @@
     kernelParams = ["ipv6.disable=0" "acpi_brightness=vendor"];
     initrd.checkJournalingFS = false;
     loader = {
+      grub = {
+        enable = true;
+        device = "/dev/sda";
+        gfxmodeEfi = "1024x768";
+      };
       systemd-boot.enable = true;
       efi.canTouchEfiVariables = true;
     };
@@ -75,7 +62,7 @@
   hardware.bluetooth.enable = true;
   services.blueman.enable = true;
   hardware.openrazer.enable = true;
-  
+
   # Hardware
   hardware = {
     cpu = { amd.updateMicrocode = true; };
@@ -121,10 +108,10 @@
                   "ShareTechMono" "SourceCodePro" ]; })
     ];
   };
-  
+
   location.provider = "geoclue2";
   services.redshift.enable = true;
-  
+
   # Services
   services = {
     acpid = { enable = true; };
@@ -144,7 +131,7 @@
   };
 
   users.defaultUserShell = pkgs.zsh;
-  
+
   users.extraUsers.${config.rde.usename} = {
     isNormalUser = true;
     uid = 1000;

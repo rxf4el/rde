@@ -42,7 +42,7 @@
                     ++ other-packages;
   in rec {
     home = {
-      homeDirectory = "/home/rxf4el";
+      # homeDirectory = "/home/rxf4el";
       # sessionVariable = {};
       stateVersion = "21.03";
       keyboard = {
@@ -50,26 +50,27 @@
         variant = "abnt2";
         options = [ "ctrl:nocaps" ];
       };
-      xdg = {
+      packages = home-packages;
+    };
+
+    xdg = {
+      enable = true;
+      dataHome = "${home.homeDirectory}/.local/share";
+      configHome = "${home.homeDirectory}/.config";
+      userDirs = {
         enable = true;
-        dataHome = "${home.homeDirectory}/.local/share";
-        configHome = "${home.homeDirectory}/.config";
-        userDirs = {
-          enable = true;
-          desktop = "${home.homeDirectory}/desktop";
-          documents = "${home.homeDirectory}/documents";
-          download = "${home.homeDirectory}/downloads";
-          publicShare = "${home.homeDirectory}/public";
-          templates = "${home.homeDirectory}/templates";
-        };
-        mimeApps = {
-          associations.added = {
-            "x-scheme-handler/org-protocol" = [
-              "org-protocol.desktop" ];
-          };
+        desktop = "${home.homeDirectory}/desktop";
+        documents = "${home.homeDirectory}/documents";
+        download = "${home.homeDirectory}/downloads";
+        publicShare = "${home.homeDirectory}/public";
+        templates = "${home.homeDirectory}/templates";
+      };
+      mimeApps = {
+        associations.added = {
+          "x-scheme-handler/org-protocol" = [
+            "org-protocol.desktop" ];
         };
       };
-      packages = home-packages;
     };
     
     programs = {
@@ -91,7 +92,7 @@
         dotDir = ".config/zsh";
         enableAutosuggestions = true;
         defaultKeymap = "emacs";
-        # history.path = "${xdg.dataHome}/zsh/zsh_history";
+        history.path = "${xdg.dataHome}/zsh/zsh_history";
         shellAliases = {
           ls = "exa --group-directories-first --sort=type --classify";
         };

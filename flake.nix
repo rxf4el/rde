@@ -18,7 +18,7 @@
       system = "x86_64-linux";
 
       overlays = {
-        unstable = finale: prev: {
+        unstable = final: prev: {
           unstable = (import inputs.unstable { inherit system; });
         };
       };

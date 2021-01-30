@@ -13,7 +13,7 @@
 
   outputs = inputs:
     let
-      lib = inputs.stable.lib;
+      lib = inputs.unstable.lib;
       inputs-with-rde = inputs // { rde = inputs.self; };
       system = "x86_64-linux";
 
@@ -35,7 +35,7 @@
       # defaultTemplate = inputs.self.templates.python.poetry;
 
       devShell."${system}" = import ./shell.nix {
-        pkgs = inputs.stable.legacyPackages.${system};
+        pkgs = inputs.unstable.legacyPackages.${system};
         #import inputs.stable { inherit system; };
       };
 

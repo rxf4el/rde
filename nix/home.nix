@@ -13,7 +13,8 @@
     };
     dev-packages = with pkgs; [
       gnupg
-      latex-packages ];
+      # latex-packages
+    ];
     cli-packages = with pkgs; [
       # neovim
       # youtube-dl
@@ -42,7 +43,7 @@
                     ++ other-packages;
   in rec {
     home = {
-      # homeDirectory = "/home/rxf4el";
+      homeDirectory = "/home/rxf4el";
       # sessionVariable = {};
       stateVersion = "20.09";
       keyboard = {

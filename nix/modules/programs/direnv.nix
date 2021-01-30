@@ -9,7 +9,7 @@ with lib; {
       programs.direnv = {
         enable = true;
         # enableNixDirenvIntegration = true;
-        stdlib = builtins.readFile "${inputs.nix-direnv}/direnvrc";
+        # stdlib = builtins.readFile "${inputs.nix-direnv}/direnvrc";
       };
     };
   };

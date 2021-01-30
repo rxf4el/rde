@@ -18,7 +18,7 @@
 
       overlays = {
         unstable = finale: prev: {
-          unstable = (import inputs.unstable { inherit system; };);
+          unstable = (import inputs.unstable { inherit system; });
         };
       };
 
@@ -58,7 +58,7 @@
 
             inputs.stable.nixosModules.notDetected
           ];
-          specialArgs = { inputs inputs-with-rde; };
+          specialArgs = { inputs = inputs-with-rde; };
         };
       };
       acer-a315 = inputs.self.nixosConfigurations.acer-a315.config.system.build.toplevel;

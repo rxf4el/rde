@@ -3,6 +3,7 @@
 with lib; {
 
   imports = [ ./programs/direnv.nix ];
+  
   options = {
     rde = {
       enable =

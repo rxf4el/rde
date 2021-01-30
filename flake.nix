@@ -7,7 +7,7 @@
     home-manager = { type = "github";
                      owner = "nix-community";
                      repo = "home-manager";
-                     inputs.nixpkgs.follows = "stable"; };
+                     inputs.nixpkgs.follows = "unstable"; };
  
   };
 

@@ -29,8 +29,8 @@
     loader = {
       grub = {
         enable = true;
-        # mirroredBoots = true;
-        devices = "/dev/disk/by-uuid/9B90-BEDD";
+        mirroredBoots = {
+          devices = "/dev/disk/by-uuid/9B90-BEDD"; };
         gfxmodeEfi = "1024x768";
       };
       systemd-boot.enable = true;

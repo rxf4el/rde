@@ -13,7 +13,7 @@
   outputs = inputs:
     let
       lib = inputs.stable.lib;
-
+      inputs-with-rde = inputs // { rde = inputs.self; };
       system = "x86_64-linux";
 
       overlays = {

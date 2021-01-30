@@ -46,7 +46,7 @@
         acer-a315 = lib.nixosSystem {
           system = "x86_64-linux";
           modules = [
-            # { nixpkgs.overlays = [ overlays.unstable ]; }
+            { nixpkgs.overlays = [ overlays.unstable ]; }
 
             # inputs.self.nixosModules.acer-a315
             (import ./nix/hosts/acer-a315)

@@ -8,7 +8,7 @@
     ./hardware-configuration.nix
   ];
   
-  nixpks.config.allowUnfree = true;
+  nixpkgs.config.allowUnfree = true;
   # powerManagement.enable = true;
   # powerManagement.powertop.enable = true;
 
@@ -27,11 +27,11 @@
     kernelParams = ["ipv6.disable=0" "acpi_brightness=vendor"];
     initrd.checkJournalingFS = false;
     loader = {
-      grub = {
-        enable = true;
-        device = "/dev/sda";
-        gfxmodeEfi = "1024x768";
-      };
+      # grub = {
+      #   enable = true;
+      #   device = "/dev/sda";
+      #   gfxmodeEfi = "1024x768";
+      # };
       systemd-boot.enable = true;
       efi.canTouchEfiVariables = true;
     };
@@ -132,7 +132,7 @@
 
   users.defaultUserShell = pkgs.zsh;
 
-  users.extraUsers.${config.rde.usename} = {
+  users.extraUsers.${config.rde.username} = {
     isNormalUser = true;
     uid = 1000;
     group = "users";

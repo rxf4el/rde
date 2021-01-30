@@ -44,7 +44,7 @@
     home = {
       # homeDirectory = "/home/rxf4el";
       # sessionVariable = {};
-      stateVersion = "21.03";
+      stateVersion = "20.09";
       keyboard = {
         layout = "br";
         variant = "abnt2";

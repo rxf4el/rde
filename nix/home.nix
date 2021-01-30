@@ -91,7 +91,7 @@
         dotDir = ".config/zsh";
         enableAutosuggestions = true;
         defaultKeymap = "emacs";
-        history.path = "${xdg.dataHome}/zsh/zsh_history";
+        # history.path = "${xdg.dataHome}/zsh/zsh_history";
         shellAliases = {
           ls = "exa --group-directories-first --sort=type --classify";
         };

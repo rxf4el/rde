@@ -48,14 +48,14 @@
           modules = [
             # { nixpkgs.overlays = [ overlays.unstable ]; }
 
-            # inputs.self.nixosModules.acer-a315
-            # (import ./nix/hosts/acer-a315)
+            inputs.self.nixosModules.acer-a315
+            (import ./nix/hosts/acer-a315)
 
             inputs.home-manager.nixosModules.home-manager
             (import ./nix/home.nix)
 
-            # inputs.self.nixosModules.rde
-            # (import ./nix/config.nix)
+            inputs.self.nixosModules.rde
+            (import ./nix/config.nix)
 
             inputs.stable.nixosModules.notDetected
           ];

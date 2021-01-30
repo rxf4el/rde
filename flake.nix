@@ -17,11 +17,11 @@
       inputs-with-rde = inputs // { rde = inputs.self; };
       system = "x86_64-linux";
 
-      overlays = {
-        unstable = finale: prev: {
-          unstable = (import inputs.unstable { inherit system; });
-        };
-      };
+      # overlays = {
+      #   unstable = finale: prev: {
+      #     unstable = (import inputs.unstable { inherit system; });
+      #   };
+      # };
 
     in {
       templates = {

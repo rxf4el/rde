@@ -9,18 +9,18 @@
   ];
   
   nixpks.config.allowUnfree = true;
-  powerManagement.enable = true;
-  powerManagement.powertop.enable = true;
+  # powerManagement.enable = true;
+  # powerManagement.powertop.enable = true;
 
-  services.tlp = {
-    enable = true;
-    extraConfig = ''
-      CPU_SCALING_GOVERNOR_ON_BAT=powersave
-      ENERGY_PERF_POLICY_ON_BAT=powersave
-      START_CHARGE_THRESH_BAT0=90
-      STOP_CHARGE_THRESH_BAT0=95
-    '';
-  };
+  # services.tlp = {
+  #   enable = true;
+  #   extraConfig = ''
+  #     CPU_SCALING_GOVERNOR_ON_BAT=powersave
+  #     ENERGY_PERF_POLICY_ON_BAT=powersave
+  #     START_CHARGE_THRESH_BAT0=90
+  #     STOP_CHARGE_THRESH_BAT0=95
+  #   '';
+  # };
 
   boot = { 
     cleanTmpDir = true;
@@ -29,8 +29,7 @@
     loader = {
       grub = {
         enable = true;
-        mirroredBoots = {
-          devices = "/dev/disk/by-uuid/9B90-BEDD"; };
+        device = "/dev/sda";
         gfxmodeEfi = "1024x768";
       };
       systemd-boot.enable = true;

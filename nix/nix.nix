@@ -2,7 +2,7 @@
 
 {
   nix = {
-    package = pkgs.unstable.nixUnstable;
+    package = pkgs.nixUnstable;
     extraOptions = ''
       experimental-features = nix-command flakes
     '';

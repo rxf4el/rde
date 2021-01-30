@@ -1,5 +1,8 @@
 { config, lib, pkgs, inputs, ... }:
+
 with lib; {
+
+  imports = [ ./programs/direnv.nix ];
   options = {
     rde = {
       enable =

@@ -54,8 +54,8 @@
             inputs.home-manager.nixosModules.home-manager
             (import ./nix/home.nix)
 
-            inputs.self.nixosModules.rde
-            (import ./nix/config.nix)
+            # inputs.self.nixosModules.rde
+            # (import ./nix/config.nix)
 
             inputs.stable.nixosModules.notDetected
           ];

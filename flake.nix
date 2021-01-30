@@ -8,9 +8,7 @@
                      owner = "nix-community";
                      repo = "home-manager";
                      inputs.nixpkgs.follows = "stable"; };
-
-    nixos-hardware.url = "github:NixOS/nixos-hardware";
-    
+ 
   };
 
   outputs = inputs:
@@ -50,7 +48,7 @@
           modules = [
             # { nixpkgs.overlays = [ overlays.unstable ]; }
 
-            inputs.nixos-hardware.nixosModules.acer-a315
+            inputs.self.nixosModules.rde
             (import ./nix/hosts/acer-a315)
 
             inputs.home-manager.nixosModules.home-manager

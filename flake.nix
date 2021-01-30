@@ -8,6 +8,9 @@
                      owner = "nix-community";
                      repo = "home-manager";
                      inputs.nixpkgs.follows = "stable"; };
+
+    nixos-hardware.url = "github:NixOS/nixos-hardware";
+    
   };
 
   outputs = inputs:

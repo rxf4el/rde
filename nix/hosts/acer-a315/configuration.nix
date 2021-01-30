@@ -29,7 +29,7 @@
     loader = {
       grub = {
         enable = true;
-        device = "/dev/sda";
+        device = "/dev/sda1";
         gfxmodeEfi = "1024x768";
       };
       systemd-boot.enable = true;

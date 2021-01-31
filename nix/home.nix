@@ -132,6 +132,7 @@
               "${mod}+Shift+f" = "fullscreen toggle";
               "${mod}+Shift+Return" = "exec ${pkgs.alacritty}/bin/alacritty";
               "${mod}+Shift+e" = "exec ${pkgs.emacs}/bin/emacsclient -c -a ''";
+              "${mod}+Shift+b" = "exec ${pkgs.firefox}/bin/firefox";
               "${mod}+Shift+c" = "exec i3-nagbar -t warning -m 'Do you really want to exit i3?' -B 'Yes, exit i3' 'i3-msg exit'";
               # "${mod}+m" = "bar toggle";
               "${mod}+d" = null;
@@ -140,9 +141,10 @@
               "${mod}+e" = null;
               "${mod}+Return" = null;
             };
+          
           bars = [
             {
-              position = "top";
+              position = "bottom";
               statusCommand = "${pkgs.i3status}/bin/i3status";
               mode = "hide";
               colors = {
@@ -152,7 +154,13 @@
               };
             }
           ];
-          # fonts = [];
+          
+          startup = [{
+            command = "exec ~/.fehbg";
+            always = true;
+            notification = false;
+          }];
+          
         };
       };
     };

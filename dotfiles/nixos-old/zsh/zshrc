@@ -1,0 +1,363 @@
+#!/usr/bin/env zsh
+
+# - - - - - - - - - - - - - - - - - - - - - -
+# Profiling Tools
+# - - - - - - - - - - - - - - - - - - - - - -
+
+PROFILE_STARTUP=false
+if [[ "$PROFILE_STARTUP" == true ]]; then
+    zmodload zsh/zprof
+    # http://zsh.sourceforge.net/Doc/Release/Prompt-Expansion.html
+    PS4=$'%D{%M%S%.} %N:%i> '
+    exec 3>&2 2>$HOME/startlog.$$
+    setopt xtrace prompt_subst
+fi
+
+
+# - - - - - - - - - - - - - - - - - - - - - -
+# Zsh Core Configuration
+# - - - - - - - - - - - - - - - - - - - - - -
+
+export PATH="${HOME}/.local/bin:/usr/bin:${PATH}"
+
+# should change its place
+export LANG="en_US.utf-8"
+export LC_ALL="C"
+export EDITOR="emacs"
+export VISUAL="emacs"
+export BROWSER="firefox"
+# export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on -Dswing.aatext=true -Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel'
+
+# Install Functions.
+#export XDG_CONFIG_HOME="$HOME/.config"
+#export UPDATE_INTERVAL=15
+
+#export DOTFILES="$HOME/dotfiles"
+#export ZSH="$HOME/dotfiles/zsh"
+
+export CACHEDIR="$HOME/.local/share"
+[[ -d "$CACHEDIR" ]] || mkdir -p "$CACHEDIR"
+
+# Load The Prompt System And Completion System And Initilize Them.
+autoload -Uz compinit promptinit
+
+# Load And Initialize The Completion System Ignoring Insecure Directories With A
+# Cache Time Of 20 Hours, So It Should Almost Always Regenerate The First Time A
+# Shell Is Opened Each Day.
+# See: https://gist.github.com/ctechols/ca1035271ad134841284
+_comp_files=(${ZDOTDIR:-$HOME}/.zcompdump(Nm-20))
+if (( $#_comp_files )); then
+    compinit -i -C
+else
+    compinit -i
+fi
+unset _comp_files
+promptinit
+setopt prompt_subst
+
+
+# - - - - - - - - - - - - - - - - - - - - - -
+# Zsh Core Configuration
+# - - - - - - - - - - - - - - - - - - - - - -
+
+autoload -U colors && colors    # Load Colors.
+unsetopt case_glob              # Use Case-Insensitve Globbing.
+setopt globdots                 # Glob Dotfiles As Well.
+setopt extendedglob             # Use Extended Globbing.
+setopt autocd                   # Automatically Change Directory If A Directory Is Entered.
+
+# Smart URLs.
+autoload -Uz url-quote-magic
+zle -N self-insert url-quote-magic
+
+# General.
+setopt brace_ccl                # Allow Brace Character Class List Expansion.
+setopt combining_chars          # Combine Zero-Length Punctuation Characters ( Accents ) With The Base Character.
+setopt rc_quotes                # Allow 'Henry''s Garage' instead of 'Henry'\''s Garage'.
+unsetopt mail_warning           # Don't Print A Warning Message If A Mail File Has Been Accessed.
+
+# Jobs.
+setopt long_list_jobs           # List Jobs In The Long Format By Default.
+setopt auto_resume              # Attempt To Resume Existing Job Before Creating A New Process.
+setopt notify                   # Report Status Of Background Jobs Immediately.
+unsetopt bg_nice                # Don't Run All Background Jobs At A Lower Priority.
+unsetopt hup                    # Don't Kill Jobs On Shell Exit.
+unsetopt check_jobs             # Don't Report On Jobs When Shell Exit.
+
+setopt correct                  # Turn On Corrections
+
+# Completion Options.
+setopt complete_in_word         # Complete From Both Ends Of A Word.
+setopt always_to_end            # Move Cursor To The End Of A Completed Word.
+setopt path_dirs                # Perform Path Search Even On Command Names With Slashes.
+setopt auto_menu                # Show Completion Menu On A Successive Tab Press.
+setopt auto_list                # Automatically List Choices On Ambiguous Completion.
+setopt auto_param_slash         # If Completed Parameter Is A Directory, Add A Trailing Slash.
+setopt no_complete_aliases
+
+setopt menu_complete            # Do Not Autoselect The First Completion Entry.
+unsetopt flow_control           # Disable Start/Stop Characters In Shell Editor.
+
+# Zstyle.
+zstyle ':completion:*:*:*:*:*' menu select
+zstyle ':completion:*:matches' group 'yes'
+zstyle ':completion:*:options' description 'yes'
+zstyle ':completion:*:options' auto-description '%d'
+zstyle ':completion:*:corrections' format ' %F{green}-- %d (errors: %e) --%f'
+zstyle ':completion:*:descriptions' format ' %F{yellow}-- %d --%f'
+zstyle ':completion:*:messages' format ' %F{purple} -- %d --%f'
+zstyle ':completion:*:warnings' format ' %F{red}-- no matches found --%f'
+zstyle ':completion:*:default' list-prompt '%S%M matches%s'
+zstyle ':completion:*' format ' %F{yellow}-- %d --%f'
+zstyle ':completion:*' group-name ''
+zstyle ':completion:*' verbose yes
+zstyle ':completion::complete:*' use-cache on
+zstyle ':completion::complete:*' cache-path "$HOME/.zcompcache"
+zstyle ':completion:*' list-colors $LS_COLORS
+zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#) ([0-9a-z-]#)*=01;34=0=01'
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
+zstyle ':completion:*:functions' ignored-patterns '(_*|pre(cmd|exec))'
+zstyle ':completion:*' rehash true
+
+# History.
+HISTFILE="${ZDOTDIR:-$HOME}/.zhistory"
+HISTSIZE=1000
+SAVEHIST=1000
+setopt appendhistory notify
+unsetopt beep nomatch
+
+setopt bang_hist                # Treat The '!' Character Specially During Expansion.
+setopt inc_append_history       # Write To The History File Immediately, Not When The Shell Exits.
+setopt share_history            # Share History Between All Sessions.
+setopt hist_expire_dups_first   # Expire A Duplicate Event First When Trimming History.
+setopt hist_ignore_dups         # Do Not Record An Event That Was Just Recorded Again.
+setopt hist_ignore_all_dups     # Delete An Old Recorded Event If A New Event Is A Duplicate.
+setopt hist_find_no_dups        # Do Not Display A Previously Found Event.
+setopt hist_ignore_space        # Do Not Record An Event Starting With A Space.
+setopt hist_save_no_dups        # Do Not Write A Duplicate Event To The History File.
+setopt hist_verify              # Do Not Execute Immediately Upon History Expansion.
+setopt extended_history         # Show Timestamp In History.
+
+# - - - - - - - - - - - - - - - - - - - - - -
+# Zinit Configuration
+# - - - - - - - - - - - - - - - - - - - - - -
+
+__ZINIT="${ZDOTDIR:-$HOME}/.zinit/bin/zinit.zsh"
+
+if [[ ! -f "$__ZINIT" ]]; then
+    print -P "%F{33}▓▒░ %F{220}Installing DHARMA Initiative Plugin Manager (zdharma/zinit)…%f"
+    command mkdir -p "$HOME/.zinit" && command chmod g-rwX "$HOME/.zinit"
+    command git clone https://github.com/zdharma/zinit "$HOME/.zinit/bin" && \
+        print -P "%F{33}▓▒░ %F{34}Installation successful.%f%b" || \
+            print -P "%F{160}▓▒░ The clone has failed.%f%b"
+fi
+
+. "$__ZINIT"
+autoload -Uz _zinit
+(( ${+_comps} )) && _comps[zinit]=_zinit
+
+
+
+# - - - - - - - - - - - - - - - - - - - - - -
+# Theme
+# - - - - - - - - - - - - - - - - - - - - - -
+
+# Most Themes Use This Option.
+setopt promptsubst
+
+# These plugins provide many aliases - atload''
+zinit wait lucid for \
+      OMZ::lib/git.zsh \
+      atload"unalias grv" \
+      OMZ::plugins/git/git.plugin.zsh
+
+# Provide A Simple Prompt Till The Theme Loads
+PS1="READY >"
+zinit ice wait'!' lucid
+# zinit ice depth=1; zinit light romkatv/powerlevel10k
+zinit ice depth=1; zinit light nojhan/liquidprompt
+
+
+# - - - - - - - - - - - - - - - - - - - - - -
+# Annexes
+# - - - - - - - - - - - - - - - - - - - - - -
+
+# Load a few important annexes, without Turbo (this is currently required for annexes)
+zinit light-mode for \
+    zinit-zsh/z-a-rust \
+    zinit-zsh/z-a-as-monitor \
+    zinit-zsh/z-a-patch-dl \
+    zinit-zsh/z-a-bin-gem-node
+
+# - - - - - - - - - - - - - - - - - - - - - -
+# Plugins
+# - - - - - - - - - - - - - - - - - - - - - -
+
+zinit wait lucid light-mode for \
+      OMZL::compfix.zsh \
+      OMZL::completion.zsh \
+      OMZL::git.zsh \
+      OMZL::grep.zsh \
+      OMZL::history.zsh \
+      OMZP::web-search/web-search.plugin.zsh
+
+zinit load zsh-users/zsh-autosuggestions
+zinit load zdharma/fast-syntax-highlighting
+zinit load spwhitt/nix-zsh-completions
+
+# LS_COLORS
+zinit ice atclone"dircolors -b LS_COLORS > clrs.zsh" \
+      atpull'%atclone' pick"clrs.zsh" nocompile'!' \
+      atload'zstyle ":completion:*" list-colors “${(s.:.)LS_COLORS}”'
+zinit light trapd00r/LS_COLORS
+
+
+# Recommended Be Loaded Last.
+zinit ice wait blockf lucid atpull'zinit creinstall -q .'
+ zinit load zsh-users/zsh-completions
+
+ # Semi-graphical .zshrc editor for zinit commands
+ zinit load zdharma/zui
+ zinit ice lucid wait'[[ -n ${ZLAST_COMMANDS[(r)cras*]} ]]'
+ zinit load zdharma/zplugin-crasis
+
+ # - - - - - - - - - - - - - - - - - - - - - -
+ # User Comfiguration
+ # - - - - - - - - - - - - - - - - - - - - - -
+
+ setopt no_beep
+ # export MANPATH="/usr/local/man:$MANPATH"
+
+ # Local Config
+ # [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
+
+ # foreach piece (
+ #     exports.zsh
+ #     node.zsh
+ #     aliases.zsh
+ #     functions.zsh
+ #     personal.zsh
+ # ) {
+ #     . $ZSH/config/$piece
+ # }
+
+ function open_command() {
+     local open_cmd
+
+     # define the open command
+     case "$OSTYPE" in
+         darwin*)  open_cmd='open' ;;
+         cygwin*)  open_cmd='cygstart' ;;
+         linux*)   [[ "$(uname -r)" != *icrosoft* ]] && open_cmd='nohup xdg-open' || {
+                           open_cmd='cmd.exe /c start ""'
+                           [[ -e "$1" ]] && { 1="$(wslpath -w "${1:a}")" || return 1 }
+                       } ;;
+         msys*)    open_cmd='start ""' ;;
+         *)        echo "Platform $OSTYPE not supported"
+                   return 1
+                   ;;
+     esac
+
+     ${=open_cmd} "$@" &>/dev/null
+ }
+
+ 
+ # check if given command exists on the system
+ command_exists() {
+     command -v "${1}" > /dev/null
+     return $?
+ }
+
+ # pgs - Perl Global Substitution
+ # find pattern		= 1st arg
+ # replace pattern	= 2nd arg
+ # filename			= 3rd arg
+ pgs() { # [find] [replace] [filename]
+     perl -i.orig -pe 's/'"$1"'/'"$2"'/g' "$3"
+ }
+
+
+ # Perl grep, because 'grep -P' is terrible. Lets you work with pipes or files.
+ prep() { # [pattern] [filename unless STDOUT]
+     perl -nle 'print if /'"$1"'/;' $2
+ }
+ 
+ # - - - - - - - - - - - - - - - - - - - - - -
+ # cdr, persistent cd
+ # - - - - - - - - - - - - - - - - - - - - - -
+
+ autoload -Uz chpwd_recent_dirs cdr add-zsh-hook
+ add-zsh-hook chpwd chpwd_recent_dirs
+ DIRSTACKFILE="$HOME/.cache/zsh/dirs"
+
+ # Make `DIRSTACKFILE` If It 'S Not There.
+ if [[ ! -a $DIRSTACKFILE ]]; then
+     mkdir -p $DIRSTACKFILE[0,-5]
+     touch $DIRSTACKFILE
+ fi
+
+ if [[ -f $DIRSTACKFILE ]] && [[ $#dirstack -eq 0 ]]; then
+     dirstack=( ${(f)"$(< $DIRSTACKFILE)"} )
+ fi
+
+ chpwd() {
+     print -l $PWD ${(u)dirstack} >>$DIRSTACKFILE
+     local d="$(sort -u $DIRSTACKFILE )"
+     echo "$d" > $DIRSTACKFILE
+ }
+
+ DIRSTACKSIZE=20
+
+ setopt auto_pushd pushd_silent pushd_to_home
+
+ setopt pushd_ignore_dups        # Remove Duplicate Entries
+ setopt pushd_minus              # This Reverts The +/- Operators.
+
+ # - - - - - - - - - - - - - - - - - - - - - -
+ # End Profiling Script
+ # - - - - - - - - - - - - - - - - - - - - - -
+
+ if [[ "$PROFILE_STARTUP" == true ]]; then
+     unsetopt xtrace
+     exec 2>&3 3>&-
+     zprof > ~/zshprofile$(date +'%s')
+ fi
+
+ # - - - - - - - - - - - - - - - - - - - - - -
+ # ALIASES
+ # - - - - - - - - - - - - - - - - - - - - - -
+
+ # ls
+ command_exists "exa"
+ if [ "${?}" -eq "0" ]; then
+     alias ls='exa --group-directories-first --sort=type --classify'
+ else
+     # if not exa installed, make ls colorful
+     alias ls='ls --group-directories-first --color=auto -p'
+ fi
+
+ alias l='ls -l'
+ alias la='ls -lah'
+ alias ll='ls -a'
+
+ # fix mistakes
+ alias sl=ls
+
+ #####################################
+ # cat/less/man => bat
+ command_exists "bat"
+ if [ "${?}" -eq "0" ]; then
+     alias cat='bat -pp'
+     alias less='bat --paging=always'
+
+     # override MANPAGER
+     export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+ fi
+
+ #####################################
+ # mkdir
+ alias mkdir='mkdir -pv'
+
+ #####################################
+ # startx
+ alias x='startx'

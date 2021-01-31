@@ -103,8 +103,61 @@
         };
 
       };
+
+      rofi = {
+        enable = true;
+        theme = "dmenu";
+        # extraConfig = "";
+      };
+      
     };
 
+    # - - - - - - - - - - - - - - - - - - - - - -    
+    xsession = {
+      windowManager.i3 = rec {
+        enable = true;
+        package = pkgs.i3-gaps;
+        config = {
+          modifier = "Mod4";
+          terminal = "alacritty";
+          menu = "rofi -show run";
+
+          workspaceAutoBackAndForth = true;
+          keybindings =
+            let mod = "Mod4";
+            in lib.mkOptionDefault {
+              "${mod}+Shift+d" = "exec ${pkgs.rofi}/bin/rofi -show run";
+              "${mod}+Tab" = "workspace back_and_forth";
+              "${mod}+t" = "workspace number 1";
+              "${mod}+Shift+f" = "fullscreen toggle";
+              "${mod}+Shift+Return" = "exec ${pkgs.alacritty}/bin/alacritty";
+              "${mod}+Shift+e" = "exec ${pkgs.emacs}/bin/emacsclient -c -a ''";
+              "${mod}+Shift+c" = "exec i3-nagbar -t warning -m 'Do you really want to exit i3?' -B 'Yes, exit i3' 'i3-msg exit'";
+              # "${mod}+m" = "bar toggle";
+              "${mod}+d" = null;
+              "${mod}+w" = null;
+              "${mod}+f" = null;
+              "${mod}+e" = null;
+              "${mod}+Return" = null;
+            };
+          bars = [
+            {
+              position = "top";
+              statusCommand = "${pkgs.i3status}/bin/i3status";
+              mode = "hide";
+              colors = {
+                background = "#000000";
+                statusline = "#ffffff";
+                separator = "#666666";
+              };
+            }
+          ];
+          # fonts = [];
+        };
+      };
+    };
+    # - - - - - - - - - - - - - - - - - - - - - -
+    
     services = {
       network-manager-applet.enable = true;
       blueman-applet.enable = true;

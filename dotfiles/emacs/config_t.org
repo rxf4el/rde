@@ -1,0 +1,296 @@
+#+TITLE: Emacs Configuration - Terminal
+* Header
+* Straight.el
+#+NAME: 
+#+BEGIN_SRC emacs-lisp
+  (setq straight-vc-git-default-clone-depth 1)
+  (defvar bootstrap-version)
+  (let ((bootstrap-file
+         (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+        (bootstrap-version 5))
+    (unless (file-exists-p bootstrap-file)
+      (with-current-buffer
+          (url-retrieve-synchronously
+           "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+           'silent 'inhibit-cookies)
+        (goto-char (point-max))
+        (eval-print-last-sexp)))
+    (load bootstrap-file nil 'nomessage))
+  (straight-use-package 'use-package)
+  (setq straight-use-package-by-default t)
+#+END_SRC
+
+* Core
+** Who?
+#+NAME: 
+#+BEGIN_SRC emacs-lisp
+  ;;; Who am i?
+  (setq user-full-name    "Rafael M. Mate"
+        user-mail-address "rxf4el@gmail.com"
+        user-login-name   "rxf4el")
+
+  ;;; Where am i?
+  (setq calendar-latitude -23.5
+        calendar-longitude -46.6)
+#+END_SRC
+
+** Aesthetics
+*** Fonts
+#+NAME: 
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'default-frame-alist
+               '(font . "Iosevka-10"))
+#+END_SRC
+
+*** Themes
+#+NAME: 
+#+BEGIN_SRC emacs-lisp
+
+  (use-package zenburn-theme
+    :straight t)
+  (use-package tron-legacy-theme
+    :straight t)
+
+  (load-theme 'tron-legacy t)
+
+ #+END_SRC
+
+*** Mode-line
+#+NAME:
+#+BEGIN_SRC emacs-lisp
+  (use-package smart-mode-line
+    :straight t
+    :config
+    (setq line-number-mode t
+          column-number-mode t
+          sml/mode-width 10
+          sml/no-confirm-load-theme t
+          sml/theme 'respectful)
+    :hook (emacs-startup . sml/setup))
+
+  (use-package mini-modeline
+    :straight t
+    :custom-face
+    (mini-modeline-mode-line ((t (:background "dim gray" :box nil :height 0.1))))
+    (mini-modeline-mode-line-inactive ((t (:background "#333333" :box nil :height 0.1))))
+    :config
+    (setq mini-modeline-truncate-p t
+          mini-modeline- nil
+          mini-modeline-r-format '("%e"
+                                   mode-line-front-space
+                                   mode-line-mule-info
+                                   mode-line-client
+                                   mode-line-modified
+                                   mode-line-remote
+                                   mode-line-frame-identification
+                                   mode-line-buffer-identification
+                                   (vc-mode vc-mode)
+                                   " "
+                                   mode-line-position
+                                   " "
+                                   mode-line-modes
+                                   mode-line-misc-info
+                                   mode-line-end-spaces))
+    :hook (emacs-startup . mini-modeline-mode))
+
+  (use-package rich-minority
+    :straight t
+    :config (setq rm-blacklist nil
+                  rm-whitelist "FlyC\\|Flymake\\|lsp")
+    :hook (emacs-startup . rich-minority-mode))
+#+END_SRC
+
+** Settings
+#+NAME: 
+#+BEGIN_SRC emacs-lisp
+  (setq make-backup-files nil)
+  (setq auto-save-default nil)
+  (setq-default tab-width 2)
+  (setq-default indent-tabs-mode nil)
+  (setq inhibit-startup-message t)
+
+  (fset 'yes-or-no-p 'y-or-n-p)
+
+  (delete-selection-mode t)
+  (menu-bar-mode -1)
+  (scroll-bar-mode -1)
+  (tool-bar-mode -1)
+  (blink-cursor-mode t)
+  (show-paren-mode t)
+  (column-number-mode t)
+  (set-fringe-style -1)
+  (tooltip-mode -1)
+#+END_SRC
+
+* Packages
+** Builtin
+*** Auto-Revert
+#+NAME: 
+#+BEGIN_SRC emacs-lisp
+(global-auto-revert-mode 1)
+#+END_SRC
+
+*** Buffers
+#+NAME: 
+#+BEGIN_SRC emacs-lisp
+  ;;; iBuffer as default
+  (global-set-key (kbd "C-x C-b") 'ibuffer)
+
+  ;;; Uniquify
+  (setq uniquify-buffer-name-style 'post-forward-angle-brackets)
+  (setq uniquify-separator "/")
+  (setq uniquify-after-kill-buffer-p t) ; rename after killing uniquified
+  (setq uniquify-ignore-buffers-re "*[^*]+*") ; don't muck with special buffers
+
+  ;;; EOL
+  (setq track-eol t)
+  (setq line-move-visual nil)
+#+END_SRC
+
+*** Electric-Pairs
+#+NAME: 
+#+BEGIN_SRC emacs-lisp
+
+#+END_SRC
+
+*** Hippie-Expand
+#+NAME: 
+#+BEGIN_SRC emacs-lisp
+  (with-eval-after-load 'hippie-expand
+    (setq hippie-expand-verbose t
+          hippie-expand-try-functions-list
+          '(yas/hippie-try-expand
+            try-complete-file-name
+            try-complete-file-name-partially
+            try-expand-list
+            try-expand-list-all-buffers
+            try-expand-line
+            try-expand-line-all-buffers
+            try-expand-all-abbrevs
+            try-expand-dabbrev
+            try-expand-dabbrev-all-buffers
+            try-expand-dabbrev-from-kill
+            try-complete-lisp-symbol-partially
+            try-complete-lisp-symbol)))
+  (global-set-key (kbd "M-SPC") 'hippie-expand)
+
+
+#+END_SRC
+
+*** iSearch
+#+NAME: 
+#+BEGIN_SRC emacs-lisp
+  (with-eval-after-load 'isearch
+    (setq  search-highlight t
+           isearch-lax-whitespace t
+           isearch-regexp-lax-whitespace nil
+           serach-whitespace-regexp ".*?"
+           isearch-lazy-highlight t
+           isearch-lazy-count t
+           lazy-count-prefix-format nil
+           lazy-count-suffix-format " (%s/%s)"
+           isearch-yank-on-move 'shift
+           isearch-allow-scroll 'unlimited))
+#+END_SRC
+
+*** Server
+#+NAME: 
+#+BEGIN_SRC emacs-lisp
+  (require 'server)
+  (unless (server-running-p)
+    (server-start))
+#+END_SRC
+
+** 3rdPart
+*** Aggressive-Indent
+#+NAME: 
+#+BEGIN_SRC emacs-lisp
+  (use-package aggressive-indent
+    :straight t
+    :config
+    (global-aggressive-indent-mode 1))
+#+END_SRC
+
+*** Completions
+**** Yasnippets
+#+NAME: 
+#+BEGIN_SRC emacs-lisp
+  (use-package yasnippet
+    :config
+    (let ((inhibit-message t)) (yas-reload-all))
+    (setq yas-snippet-dirs '("~/.emacs.d/snippets"))
+    :hook
+    (after-init . yas-global-mode))
+#+END_SRC
+
+*** Magit
+#+NAME: 
+#+BEGIN_SRC emacs-lisp
+  (setq vc-follows-symlinks t
+        auto-revert-check-vc-info t
+        find-file-visit-truename t)
+
+  (use-package magit
+    :commands (magit))
+
+  (use-package diff-hl
+    :hook
+    ((dired-mode . diff-hl-dired-mode)
+     (prog-mode . diff-hl-mode)
+     (conf-mode . diff-hl-mode)))
+#+END_SRC
+
+*** Which-key
+#+NAME: 
+#+BEGIN_SRC emacs-lisp
+  (use-package which-key
+    :straight t
+    :init (which-key-mode 1)
+    :config
+    (setq which-key-separator " - " ))
+#+END_SRC
+
+** Code
+*** Langs
+**** Clj
+**** Perl
+**** Python
+**** R
+*** Modes
+**** *.csv
+#+NAME: 
+#+BEGIN_SRC emacs-lisp
+  (use-package csv-mode
+    :mode ("\\.[cC][sS][vV]\\'" . csv-mode))
+#+END_SRC
+
+**** *.md
+#+NAME: 
+#+BEGIN_SRC emacs-lisp
+  (use-package markdown-mode
+    :custom
+    (markdown-fontify-code-blocks-natively t)
+    :init
+    (add-hook 'markdown-mode-hook 'markdown-toggle-markup-hiding))
+
+#+END_SRC
+
+**** *.nix
+#+NAME: 
+#+BEGIN_SRC emacs-lisp
+  (use-package nix-mode
+    :mode ("\\.nix\\'" . nix-mode))
+#+END_SRC
+
+**** *.toml
+#+NAME: 
+#+BEGIN_SRC emacs-lisp
+  (use-package toml-mode
+    :straight t
+    :mode ("\\.toml\\'" . toml-mode))
+#+END_SRC
+
+* Footer
+#+NAME: 
+#+BEGIN_SRC emacs-lisp
+#+END_SRC

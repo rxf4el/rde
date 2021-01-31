@@ -1,0 +1,122 @@
+Xft.dpi: 78.0
+
+XTerm.termName: xterm-256color
+
+! force utf-8
+XTerm.vt100.locale: false
+XTerm.vt100.utf8: true
+
+! fix backspace key
+XTerm.vt100.backarrowKey: false
+XTerm.vt100.saveLines: 4096
+XTerm.ttyModes: erase ^?
+
+!! Set font
+!! LIST FONTS -$ fc-list :fontformat=TrueType -f "%{family}\n" | sort -u | less 
+XTermvt100.faceName: MesloGS Nerd Font:size=11:antialias=true
+!! XTerm.vt100.faceName: JetBrainsMono Nerd Font:size=12:antialias=true
+!! XTerm.vt100.faceName: DejaVu Sans Mono:size=11:antialias=true
+!! XTerm.vt100.boldFont: DejaVu Sans Mono:size=11:antialias=true
+!! XTerm.vt100.faceName: Iosevka:size=10:antialias=true
+!! XTerm.vt100.boldFont: Iosevka Bold:size=10:antialias=true
+
+!! Copy/Paste
+xterm*VT100.Translations: #override \
+    Shift <KeyPress> Insert: insert-selection(CLIPBOARD) \n\
+    Ctrl Shift <Key>V:    insert-selection(CLIPBOARD) \n\
+    Ctrl Shift <Key>C:    copy-selection(CLIPBOARD) \n\
+    Ctrl <Btn1Up>: exec-formatted("xdg-open '%t'", PRIMARY)
+
+!! Mouse cursor style
+!! Xcursor.size: 16
+!! Xcursor.theme: bibata-ghost
+
+! Color Scheme - rx-Cyberpunk
+! *background:  #000b1e
+! *foreground:  #0abdc6
+! *color0:      #123e7c
+! *color1:      #ff0000
+! *color2:      #d300c4
+! *color3:      #f57800
+! *color4:      #123e7c
+! *color5:      #711c91
+! *color6:      #0abdc6
+! *color7:      #d7d7d5
+! *color8:      #1c61c2
+! *color9:      #ff0000
+! *color10:     #d300c4
+! *color11:     #f57800
+! *color12:     #00ff00
+! *color13:     #711c91
+! *color14:     #0abdc6
+! *color15:     #d7d7d5
+
+! Solarized color scheme for the X Window System
+!
+! http://ethanschoonover.com/solarized
+
+! Common
+
+#define S_yellow        #b58900
+#define S_orange        #cb4b16
+#define S_red           #dc322f
+#define S_magenta       #d33682
+#define S_violet        #6c71c4
+#define S_blue          #268bd2
+#define S_cyan          #2aa198
+#define S_green         #859900
+
+
+! Dark
+
+#define S_base03        #002b36
+#define S_base02        #073642
+#define S_base01        #586e75
+#define S_base00        #657b83
+#define S_base0         #839496
+#define S_base1         #93a1a1
+#define S_base2         #eee8d5
+#define S_base3         #fdf6e3
+
+
+! Light
+
+! #define S_base03        #fdf6e3
+! #define S_base02        #eee8d5
+! #define S_base01        #93a1a1
+! #define S_base00        #839496
+! #define S_base0         #657b83
+! #define S_base1         #586e75
+! #define S_base2         #073642
+! #define S_base3         #002b36
+
+
+! To only apply colors to your terminal, for example, prefix
+! the color assignment statement with its name. Example:
+!
+! URxvt*background:            S_base03
+
+*background:              S_base03
+*foreground:              S_base0
+*fading:                  40
+*fadeColor:               S_base03
+*cursorColor:             S_base1
+*pointerColorBackground:  S_base01
+*pointerColorForeground:  S_base1
+
+*color0:                  S_base02
+*color1:                  S_red
+*color2:                  S_green
+*color3:                  S_yellow
+*color4:                  S_blue
+*color5:                  S_magenta
+*color6:                  S_cyan
+*color7:                  S_base2
+*color9:                  S_orange
+*color8:                  S_base03
+*color10:                 S_base01
+*color11:                 S_base00
+*color12:                 S_base0
+*color13:                 S_violet
+*color14:                 S_base1
+*color15:                 S_base3

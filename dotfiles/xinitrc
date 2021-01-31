@@ -1,0 +1,31 @@
+#!/usr/bin/env sh
+
+# Merge .Xresources 
+[[ -f ~/.Xresources ]] && xrdb -merge -I$HOME ~/.Xresources
+
+
+# Screen
+# Off after 1200 secs.
+# xset s on s 1200 0
+
+# Don't turn it off
+xset -dpms
+xset s off
+
+# Disable touchpad
+xinput disable 15
+
+# Change keyboard CAPS_LOCK with CTRL
+setxkbmap -option ctrl:nocaps
+
+# Set/Fix Cursor
+xsetroot -cursor_name left_ptr
+
+# Start Services
+# picom &             # XCompositor
+# systemctl --user start emacs.service
+redshift -l -23.5:-46.6  -t 5000:3000&
+
+# Start WM
+exec stumpwm
+# exec dbus-launch --exit-with-session emacs -mm --debug-init

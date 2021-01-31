@@ -39,7 +39,7 @@ with lib; {
       };
 
       fontSize = mkOption {
-        default = 12;
+        default = 10;
         type = types.int;
       };
 

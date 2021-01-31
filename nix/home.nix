@@ -7,13 +7,13 @@
     latex-packages = pkgs.texlive.combine {
       inherit (pkgs.texlive) scheme-medium
         wrapfig capt-of preview lxfonts latexmk
-        natbib biblatex biblatex-abnt fourier zpatch
+        natbib biblatex biblatex-abnt fourier xpatch
         ctex xetex minted fvextra amsmath upquote
         catchfile xstring framed dvipng;
     };
     dev-packages = with pkgs; [
       gnupg
-      # latex-packages
+      latex-packages
     ];
     cli-packages = with pkgs; [
       # neovim
@@ -96,14 +96,11 @@
         history.path = "${xdg.dataHome}/zsh/zsh_history";
         shellAliases = {
           ls = "exa --group-directories-first --sort=type --classify";
-	  l = "ls -lh";
-	  la = "ls -lha";
-	  x = "startx";
+	        l = "ls -lh";
+	        la = "ls -lha";
+	        x = "startx";
         };
-        localVariables = {
-          LC_ALL = "C";
-          PROMPT = "%F{red}❯%f%F{yellow}❯%f%F{green}❯%f ";
-        };
+
       };
     };
 

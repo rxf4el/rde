@@ -43,7 +43,16 @@
 
   networking = {
     hostName = "acer-a315";
-    networkmanager.enable = true;
+    nameservers = [ "1.1.1.1" "1.0.0.1" ];
+    networkmanager = {
+      enable = true;
+      dns = "none";
+    };
+    useDHCP = false;
+    interfaces = {
+      enp2s0.useDHCP = true;
+      wlp3s0.useDHCP = true;
+    };
     firewall.enable = false;
     # extraHosts = "127.0.0.1 ${config.networking.hostName}.lan";
   };
@@ -141,6 +150,17 @@
     extraGroups = [ "wheel" "networkmanager" 
                     "audio" "video" 
                     "input" "disk" ];
+  };
+
+  programs = {
+    zsh = {
+      enable = true;
+      interactiveShellInit = ''
+       source ${pkgs.grml-zsh-config}/etc/zsh/zshrc 
+       zstyle ':prompt:grml:left:items:user' pre '%F{green}%B'  
+      '';
+      promptInit = "";
+    };
   };
 
   system.stateVersion = "20.09";

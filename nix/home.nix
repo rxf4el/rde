@@ -18,6 +18,7 @@
     cli-packages = with pkgs; [
       # neovim
       # youtube-dl
+      neofetch
       bat
       exa
       nixfmt

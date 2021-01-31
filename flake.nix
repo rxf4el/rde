@@ -20,8 +20,8 @@
       overlays = {
         unstable = final: prev: {
           unstable = (import inputs.unstable {
-            overlays = [(import ./nix/modules/overlays/python.nix)];
-            inherit system; });
+            inherit system;
+          });
         };
       };
 

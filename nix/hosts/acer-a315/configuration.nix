@@ -42,7 +42,7 @@
   ];
 
   networking = {
-    hostName = "ixy";
+    hostName = "acer-a315";
     networkmanager.enable = true;
     firewall.enable = false;
     # extraHosts = "127.0.0.1 ${config.networking.hostName}.lan";
@@ -110,18 +110,20 @@
   };
 
   location.provider = "geoclue2";
-  services.redshift.enable = true;
 
   # Services
   services = {
-    acpid = { enable = true; };
+    redshift.enable = true;
+    acpid.enable = true;
     # printing.enable = true;
-    openssh = { enable = true; };
+    openssh.enable = true;
+    
     dbus = {
       enable = true;
       packages = with pkgs; [gnome3.dconf];
     };
-    xserver = {
+
+   xserver = {
       enable = true;
       displayManager.startx.enable = true;
       windowManager.stumpwm.enable = true;

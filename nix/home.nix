@@ -91,15 +91,18 @@
         enable = true;
         autocd = true;
         dotDir = ".config/zsh";
-        enableAutosuggestions = true;
+        # enableAutosuggestions = true;
         defaultKeymap = "emacs";
         history.path = "${xdg.dataHome}/zsh/zsh_history";
         shellAliases = {
           ls = "exa --group-directories-first --sort=type --classify";
+	  l = "ls -lh";
+	  la = "ls -lha";
+	  x = "startx";
         };
         localVariables = {
           LC_ALL = "C";
-          # PROMPT = "%F{red}❯%f%F{yellow}❯%f%F{green}❯%f ";
+          PROMPT = "%F{red}❯%f%F{yellow}❯%f%F{green}❯%f ";
         };
       };
     };

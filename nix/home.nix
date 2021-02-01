@@ -146,7 +146,7 @@
             {
               position = "bottom";
               statusCommand = "${pkgs.i3status}/bin/i3status";
-              mode = "hide";
+              mode = "invisible";
               colors = {
                 background = "#000000";
                 statusline = "#ffffff";

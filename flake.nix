@@ -35,7 +35,8 @@
       };
 
       # defaultTemplate = inputs.self.templates.python.poetry;
-
+      defaultTemplate = inputs.self.templates.rde;
+      
       devShell."${system}" = import ./shell.nix {
         pkgs = inputs.unstable.legacyPackages.${system};
         #import inputs.stable { inherit system; };

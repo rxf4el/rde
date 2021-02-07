@@ -2,9 +2,9 @@
 (in-package :stumpwm)
 
 (defun load-file (file)
-  (load (concatenate 'string (getenv "XDG_CONFIG_HOME") "~/.stumpwm.d/" file ".lisp")))
+  (load (concatenate 'string (getenv "HOME") "/.stumpwm.d/" file ".lisp")))
 
-(set-module-dir (concatenate 'string (getenv "XDG_CONFIG_HOME") "/.stumpwm.d/contrib"))
+(set-module-dir (concatenate 'string (getenv "HOME") "/.stumpwm.d/contrib"))
 
 (load-file "commands")
 (load-file "custom")
@@ -24,14 +24,15 @@
 (run-shell-command "emacs --daemon")
 
 ;; Change Prefix-Key
-(set-prefix-key (kbd "C-t"))
+(set-prefix-key (kbd "s-o"))
 
 ;;; defprogram sets the keys to be
 ;;;  s-(key) for just shelling out (command)
 ;;;  s-(uppercase key) for focusing the window named (command)
 ;;;  C-t C-(upcase key) for "run-or-pull"-ing the window named (command)
 ;;(defprogram conkeror "conkeror" "c" '(:class "Conkeror") :rat t)
-(defprogram emacs "emacsclient -c" "e" '(:class "Emacs"))
+(defprogram emacs "emacs" "e" '(:class "Emacs"))
+;; (defprogram emacs "emacsclient -c" "e" '(:class "Emacs"))
 (defprogram firefox "firefox" "f" '(:class "Firefox"))
 ;;(defprogram qutebrowser "qutebrowser" "B" '(:class "Qutebrowser"))
 ;;(defprogram urxvt "urxvt" "a" '(:class "Alacritty"))
@@ -81,6 +82,9 @@
 (set-msg-border-width 1)
 (set-frame-outline-width 1)
 (set-normal-gravity :center)
+
+;; set the mouse focus
+(setf *mouse-focus-policy* :click)
 
 ;;; starts the mode-line
 ;; (stumpwm:toggle-mode-line (stumpwm:current-screen)

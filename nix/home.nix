@@ -13,7 +13,14 @@
     };
     dev-packages = with pkgs; [
       gnupg
-      latex-packages
+      # latex-packages
+      colorpicker
+      vscode
+      nodejs
+      nodePackages.typescript
+      nodePackages.typescript-language-server
+      rnix-lsp
+      python3
     ];
     cli-packages = with pkgs; [
       # neovim
@@ -35,10 +42,12 @@
       scrot
       ffmpeg
       pavucontrol
+      pulsemixer
       font-manager ];
     other-packages = with pkgs; [
       poppler
-      zathura ];
+      zathura
+      gnome3.adwaita-icon-theme];
     
     home-packages = dev-packages ++ cli-packages ++ media-packages
                     ++ other-packages;
@@ -99,6 +108,8 @@
           ls = "exa --group-directories-first --sort=type --classify";
 	        l = "ls -lh";
 	        la = "ls -lha";
+          cdc = "cd /media/data/00-09-configs/01-NixOS";
+          cdd = "cd /media/data";
 	        x = "startx";
         };
 
@@ -121,19 +132,18 @@
           modifier = "Mod4";
           terminal = "alacritty";
           menu = "rofi -show run";
-
-          workspaceAutoBackAndForth = true;
+          workspaceAutoBackAndForth = false;
           keybindings =
             let mod = "Mod4";
             in lib.mkOptionDefault {
-              "${mod}+Shift+d" = "exec ${pkgs.rofi}/bin/rofi -show run";
+              "${mod}+Ctrl+d" = "exec ${pkgs.rofi}/bin/rofi -show run";
               "${mod}+Tab" = "workspace back_and_forth";
               "${mod}+t" = "workspace number 1";
-              "${mod}+Shift+f" = "fullscreen toggle";
-              "${mod}+Shift+Return" = "exec ${pkgs.alacritty}/bin/alacritty";
-              "${mod}+Shift+e" = "exec ${pkgs.emacs}/bin/emacsclient -c -a ''";
-              "${mod}+Shift+b" = "exec ${pkgs.firefox}/bin/firefox";
-              "${mod}+Shift+c" = "exec i3-nagbar -t warning -m 'Do you really want to exit i3?' -B 'Yes, exit i3' 'i3-msg exit'";
+              "${mod}+Ctrl+f" = "fullscreen toggle";
+              "${mod}+Ctrl+Return" = "exec ${pkgs.alacritty}/bin/alacritty";
+              "${mod}+Ctrl+e" = "exec ${pkgs.emacs}/bin/emacsclient -c -a ''";
+              "${mod}+Ctrl+b" = "exec ${pkgs.firefox}/bin/firefox";
+              "${mod}+Ctrl+c" = "exec i3-nagbar -t warning -m 'Do you really want to exit i3?' -B 'Yes, exit i3' 'i3-msg exit'";
               # "${mod}+m" = "bar toggle";
               "${mod}+d" = null;
               "${mod}+w" = null;
@@ -141,7 +151,7 @@
               "${mod}+e" = null;
               "${mod}+Return" = null;
             };
-          
+
           bars = [
             {
               position = "bottom";

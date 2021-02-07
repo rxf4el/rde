@@ -2,13 +2,15 @@
   description = "rxf4el's Reproducible Desktop Environment.";
 
   inputs = rec {
+
     stable.url = "github:NixOS/nixpkgs/nixos-20.09";
+
     unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+
     home-manager = { type = "github";
                      owner = "nix-community";
                      repo = "home-manager";
                      inputs.nixpkgs.follows = "/unstable"; };
- 
   };
 
   outputs = inputs:

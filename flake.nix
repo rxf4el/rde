@@ -11,6 +11,9 @@
                      owner = "nix-community";
                      repo = "home-manager";
                      inputs.nixpkgs.follows = "/unstable"; };
+
+    emacs.url = "github:nix-community/emacs-overlay";
+
   };
 
   outputs = inputs:
@@ -22,6 +25,7 @@
       overlays = {
         unstable = final: prev: {
           unstable = (import inputs.unstable {
+            overlays = [ inputs.emacs.overlay ];
             inherit system;
           });
         };

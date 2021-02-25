@@ -17,8 +17,11 @@
       colorpicker
       vscode
       nodejs
+      nodePackages.nodemon
       nodePackages.typescript
       nodePackages.typescript-language-server
+      nodePackages.javascript-typescript-langserver
+      postman
       rnix-lsp
       python3
     ];
@@ -37,6 +40,7 @@
       graphviz ];
     media-packages = with pkgs; [
       # obs-studio # Software for video recording and live streaming
+      # ungoogled-chromium
       feh
       imagemagick
       scrot
@@ -110,7 +114,8 @@
 	        la = "ls -lha";
           cdc = "cd /media/data/00-09-configs/01-NixOS";
           cdd = "cd /media/data";
-	        x = "startx";
+          sails = "node ${home.homeDirectory}/.node-packages/bin/sails";
+          x = "startx";
         };
 
       };

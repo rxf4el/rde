@@ -103,6 +103,7 @@
     xclip xorg.xset xorg.xsetroot xorg.xrdb xdotool
     xorg.xmodmap xorg.xprop xorg.xrandr xorg.xfontsel
     xorg.xbacklight
+    mariadb mariadb-client
   ];
 
   fonts = {
@@ -139,6 +140,12 @@
       videoDrivers = ["amdgpu"];
       # libinput.enable = true; # enable touchpad support;
     };
+
+   mysql = {
+     enable = true;
+     package = pkgs.mariadb;
+   };
+
   };
 
   users.defaultUserShell = pkgs.zsh;
